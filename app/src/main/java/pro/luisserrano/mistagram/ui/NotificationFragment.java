@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,13 +41,13 @@ public class NotificationFragment extends Fragment {
         
         recyclerView = view.findViewById( R.id.recycle_view );
         recyclerView.setHasFixedSize( true );
-        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getContext() );
-        //recyclerView.setLayoutManager( linearLayoutManager );
-        //notificationList = new ArrayList<>();
-        //notificationAdapter = new NotificationAdapter( getContext(),notificationList );
-        //recyclerView.setAdapter( notificationAdapter );
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getContext() );
+        recyclerView.setLayoutManager( linearLayoutManager );
+        notificationList = new ArrayList<>();
+        notificationAdapter = new NotificationAdapter( getContext(),notificationList );
+        recyclerView.setAdapter( notificationAdapter );
         
-        //readNotification();
+        readNotification();
 
         return view;
     }

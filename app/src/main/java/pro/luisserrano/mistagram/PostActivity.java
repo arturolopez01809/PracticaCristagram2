@@ -45,7 +45,7 @@ public class PostActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        storageReference = FirebaseStorage.getInstance().getReference("posts");
+        storageReference = FirebaseStorage.getInstance().getReference("Posts");
 
         binding.close.setOnClickListener( new View.OnClickListener() {
             @Override

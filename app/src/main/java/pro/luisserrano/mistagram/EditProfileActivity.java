@@ -15,10 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -62,7 +65,9 @@ public class EditProfileActivity extends AppCompatActivity {
         username = findViewById( R.id.username );
         bio = findViewById( R.id.bio );
 
-        //TODO(29): Inicializar firebaseUser al usuario actual de la base de datos
+        //TODO(29): Inicializar firebaseUser al usuario actual de la base de datos --DONE
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
 
@@ -72,7 +77,12 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User user = snapshot.getValue( User.class );
-                //TODO(30): Mostrar los datos de user en los campos de la vista
+                //TODO(30): Mostrar los datos de user en los campos de la vista --DONE
+                fullname.setText(user.getFullname());
+                bio.setText(user.getBio());
+                username.setText(user.getUsername());
+                Glide.with(getApplicationContext()).load(user.getImageurl()).into(image_profile);
+
 
             }
 

@@ -61,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
                 String email = binding.username.getText().toString();
                 String password = binding.password.getText().toString();
 
+
+
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                     Toast.makeText(LoginActivity.this, getText(R.string.fields_required), Toast.LENGTH_SHORT).show();
                 } else {

@@ -33,6 +33,8 @@ import pro.luisserrano.mistagram.databinding.FragmentHomeBinding;
 import pro.luisserrano.mistagram.model.Post;
 import pro.luisserrano.mistagram.model.Story;
 
+import static com.google.firebase.database.FirebaseDatabase.getInstance;
+
 
 public class HomeFragment extends Fragment {
 
@@ -110,8 +112,7 @@ public class HomeFragment extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        reference = FirebaseDatabase.getInstance().getReference();
-        reference.child("Follow").child(user.getUid()).setValue("following");
+        reference = getInstance().getReference().child("Follow").child(user.getUid()).child("following");
 
         reference.addValueEventListener( new ValueEventListener() {
             @Override
@@ -134,8 +135,7 @@ public class HomeFragment extends Fragment {
     private void readPosts(){
 
         //TODO(13): Inicializar reference al valor del hijo "Posts" --DONE
-
-        reference.child("Posts");
+        reference=getInstance().getReference().child("Posts");
 
         /*TODO(14): Añadir a reference un listener sobre el evento addValue con el siguiente valor --DONE*/
 
@@ -146,7 +146,7 @@ public class HomeFragment extends Fragment {
                 for(DataSnapshot snapshot1: snapshot.getChildren()){
                     Post post = snapshot1.getValue( Post.class );
                     for(String id : followingList){
-                        if(post.getPublisher().equals( id )){
+                        if(post.getPublisher().equals(id) ){
                             postLists.add( post );
                         }
                     }
@@ -168,7 +168,7 @@ public class HomeFragment extends Fragment {
     private void readStory(){
         //TODO(15): Inicializar reference al valor del hijo "Story" --DONE
 
-        reference.child("Story");
+        reference=getInstance().getReference().child("Story");
 
         /*TODO(16): Añadir a reference un listener sobre el evento addValue con el siguiente valor --DONE*/
 

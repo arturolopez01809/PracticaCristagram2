@@ -29,6 +29,8 @@ import jp.shts.android.storiesprogressview.StoriesProgressView;
 import pro.luisserrano.mistagram.model.Story;
 import pro.luisserrano.mistagram.model.User;
 
+import static com.google.firebase.database.FirebaseDatabase.getInstance;
+
 public class StoryActivity extends AppCompatActivity implements StoriesProgressView.StoriesListener {
 
     int counter = 0;
@@ -243,7 +245,10 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     private void seenNumber(String storyid){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story")
                 .child( userid ).child( storyid ).child( "views" );
-        //TODO(33): Inicializar reference a /Story/iddelusuario/iddelstory/views
+        //TODO(33): Inicializar reference a /Story/iddelusuario/iddelstory/views --DONE
+
+        reference=getInstance().getReference().child("Story").child("iddelusuario").child("iddelstory").child("views");
+
         reference.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

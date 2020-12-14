@@ -43,6 +43,8 @@ import pro.luisserrano.mistagram.data.adapter.MyFotoAdapter;
 import pro.luisserrano.mistagram.model.Post;
 import pro.luisserrano.mistagram.model.User;
 
+import static com.google.firebase.database.FirebaseDatabase.getInstance;
+
 public class ProfileFragment extends Fragment {
 
     ImageView image_Profile, options;
@@ -131,16 +133,16 @@ public class ProfileFragment extends Fragment {
                 if(btn.equals(getContext().getString(R.string.edit_profile))){
                     startActivity( new Intent( getContext(), EditProfileActivity.class ) );
                 }else if(btn.equals( "follow" )){
-                    FirebaseDatabase.getInstance().getReference().child( "Follow" ).child( firebaseUser.getUid() )
+                    getInstance().getReference().child( "Follow" ).child( firebaseUser.getUid() )
                             .child( "following" ).child( profileid ).setValue( true );
-                    FirebaseDatabase.getInstance().getReference().child( "Follow" ).child( profileid )
+                    getInstance().getReference().child( "Follow" ).child( profileid )
                             .child( "followers" ).child( firebaseUser.getUid() ).setValue( true );
                     addNotifications();
 
                 }else if(btn.equals( "following" )){
-                    FirebaseDatabase.getInstance().getReference().child( "Follow" ).child( firebaseUser.getUid() )
+                    getInstance().getReference().child( "Follow" ).child( firebaseUser.getUid() )
                             .child( "following" ).child( profileid ).removeValue();
-                    FirebaseDatabase.getInstance().getReference().child( "Follow" ).child( profileid )
+                    getInstance().getReference().child( "Follow" ).child( profileid )
                             .child( "followers" ).child( firebaseUser.getUid() ).removeValue();
                 }
             }
@@ -196,7 +198,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addNotifications(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child( profileid );
+        DatabaseReference reference = getInstance().getReference("Notifications").child( profileid );
 
         /*TODO(23): Crear un objeto de tipo HashMap<String,Object> que contenga como pares "userid", con el id del usuario firegbase, "text" con el valor "started following you", "postid" con valor "" e "ispot" con valor false --DONE*/
 
@@ -210,7 +212,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void userInfo(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child( profileid );
+        DatabaseReference reference = getInstance().getReference("Users").child( profileid );
         reference.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -224,7 +226,7 @@ public class ProfileFragment extends Fragment {
                 fullname.setText(user.getFullname());
                 bio.setText(user.getBio());
                 username.setText(user.getUsername());
-                Picasso.get().load(user.getImageurl()).into(image_Profile);
+                Glide.with(getContext()).load(user.getImageurl()).into(image_Profile);
 
             }
 
@@ -238,7 +240,7 @@ public class ProfileFragment extends Fragment {
     private void checkFollow(){
         //TODO(25) Inicializar reference a los usuarios que sigue el actual usuario /Follow/Uid/following --DONE
 
-        reference.child(firebaseUser.getUid()).child("Follow").child("Uid").child("following");
+        reference=getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following");
 
         reference.addValueEventListener( new ValueEventListener() {
             @Override
@@ -261,7 +263,8 @@ public class ProfileFragment extends Fragment {
 
         //TODO(26) Inicializar reference a los usuarios que siguen al  usuario /Follow/Uid/followers --DONE
 
-        reference.child(firebaseUser.getUid()).child("Follow").child("Uid").child("followers");
+
+        reference=getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following");
 
         reference.addValueEventListener( new ValueEventListener() {
             @Override
@@ -277,7 +280,7 @@ public class ProfileFragment extends Fragment {
 
         //TODO(26) Inicializar reference a los usuarios que siguen al  usuario /Follow/profileid/followers --DONE
 
-        reference.child(firebaseUser.getUid()).child("Follow").child("profileid").child("followers");
+        reference=getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("followers");
 
         reference.addValueEventListener( new ValueEventListener() {
             @Override
@@ -293,7 +296,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getNrPosts(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference reference = getInstance().getReference("Posts");
         reference.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -320,7 +323,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void myFotos(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference reference = getInstance().getReference("Posts");
         reference.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -344,7 +347,7 @@ public class ProfileFragment extends Fragment {
 
     private void mysaves(){
         mySaves = new ArrayList<>();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Saves")
+        DatabaseReference reference = getInstance().getReference("Saves")
                 .child( firebaseUser.getUid() );
         reference.addValueEventListener( new ValueEventListener() {
             @Override
@@ -362,7 +365,7 @@ public class ProfileFragment extends Fragment {
         } );
     }
     private void readSaves(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference reference = getInstance().getReference("Posts");
         reference.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

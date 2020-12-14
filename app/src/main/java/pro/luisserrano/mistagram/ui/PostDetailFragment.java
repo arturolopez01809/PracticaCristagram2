@@ -25,12 +25,16 @@ import pro.luisserrano.mistagram.R;
 import pro.luisserrano.mistagram.data.adapter.PostAdapter;
 import pro.luisserrano.mistagram.model.Post;
 
+import static com.google.firebase.database.FirebaseDatabase.getInstance;
+
 public class PostDetailFragment extends Fragment {
 
     String postid;
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> postList;
+
+    private DatabaseReference reference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +60,9 @@ public class PostDetailFragment extends Fragment {
 
     private void readPost() {
 
-        //TODO(28): Inicializar reference a /Posts/postid
+        //TODO(28): Inicializar reference a /Posts/postid --DONE
+
+        reference = getInstance().getReference().child("Posts").child("postid");
 
         reference.addValueEventListener( new ValueEventListener() {
             @Override
@@ -64,7 +70,7 @@ public class PostDetailFragment extends Fragment {
 
                 postList.clear();
                 Post post = snapshot.getValue( Post.class );
-                postList.add( post );
+                postList.add(post);
 
                 postAdapter.notifyDataSetChanged();
 
