@@ -62,7 +62,7 @@ public class PostDetailFragment extends Fragment {
 
         //TODO(28): Inicializar reference a /Posts/postid --DONE
 
-        reference = getInstance().getReference().child("Posts").child("postid");
+        reference = getInstance().getReference().child("Posts").child(postid);
 
         reference.addValueEventListener( new ValueEventListener() {
             @Override

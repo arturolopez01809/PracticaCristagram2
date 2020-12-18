@@ -264,7 +264,7 @@ public class ProfileFragment extends Fragment {
         //TODO(26) Inicializar reference a los usuarios que siguen al  usuario /Follow/Uid/followers --DONE
 
 
-        reference=getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following");
+        reference=getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("followers");
 
         reference.addValueEventListener( new ValueEventListener() {
             @Override
@@ -280,7 +280,7 @@ public class ProfileFragment extends Fragment {
 
         //TODO(26) Inicializar reference a los usuarios que siguen al  usuario /Follow/profileid/followers --DONE
 
-        reference=getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("followers");
+        reference=getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following");
 
         reference.addValueEventListener( new ValueEventListener() {
             @Override
